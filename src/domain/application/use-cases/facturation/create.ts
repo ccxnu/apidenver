@@ -1,59 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { FacturationRepository } from '@/application/repositories/facturation.repository';
-import { UserRepository } from '@/application/repositories/user.repository';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
-import { Facturation } from '@/domain/entities/facturation';
+import { FacturationRepository } from "@/application/repositories/facturation.repository";
+import { UserRepository } from "@/application/repositories/user.repository";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
+import { Facturation } from "@/domain/entities/facturation";
 
 interface UseCaseRequest
 {
-  userId: string;
-  legalName: string;
-  rucOrCedula: string;
-  phoneNumber: string;
-  accountingEmail: string;
-  province: string;
-  canton: string;
-  mainStreet: string;
-  addressNumber: string;
-  secondaryStreet: string;
-  isMemberOfEquinoccioNetwork: boolean;
+    userId: string;
+    legalName: string;
+    rucOrCedula: string;
+    phoneNumber: string;
+    accountingEmail: string;
+    province: string;
+    canton: string;
+    mainStreet: string;
+    addressNumber: string;
+    secondaryStreet: string;
+    isMemberOfEquinoccioNetwork: boolean;
 }
 
 type UseCaseResponse = Either<
-  ResourceNotFoundError,
-  {
-    facturation: Facturation;
-  }
->
+    ResourceNotFoundError,
+    {
+        facturation: Facturation;
+    }
+>;
 
 @Injectable()
 export class CreateFacturationUseCase
 {
-  constructor(
-    private readonly cooperativeRepository: FacturationRepository,
-    private readonly userRepository: UserRepository,
-  )
-  {}
+    constructor(
+        private readonly cooperativeRepository: FacturationRepository,
+        private readonly userRepository: UserRepository,
+    )
+    {}
 
-  async execute(props: UseCaseRequest): Promise<UseCaseResponse>
-  {
-		const user = await this.userRepository.findById(props.userId);
-
-		if (!user)
+    async execute(props: UseCaseRequest): Promise<UseCaseResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const user = await this.userRepository.findById(props.userId);
 
-    const facturation = Facturation.create(props);
+        if (!user)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-    await this.cooperativeRepository.create(facturation);
+        const facturation = Facturation.create(props);
 
-    user.facturationId = facturation.id;
+        await this.cooperativeRepository.create(facturation);
 
-    await this.userRepository.edit(user);
+        user.facturationId = facturation.id;
 
-    return right({ facturation });
-  }
+        await this.userRepository.edit(user);
+
+        return right({ facturation });
+    }
 }

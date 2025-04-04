@@ -1,46 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { CertificateRepository } from '@/application/repositories/certificate.repository';
-import { TransformerRepository } from '@/application/transformer/transformer';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
+import { CertificateRepository } from "@/application/repositories/certificate.repository";
+import { TransformerRepository } from "@/application/transformer/transformer";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 
 interface IRequest
 {
-	id: string;
+    id: string;
 }
 
-type CertificateResponse = Either<
-	ResourceNotFoundError,
-  Buffer
->
+type CertificateResponse = Either<ResourceNotFoundError, Buffer>;
 
 @Injectable()
 export class DownloadCertificateUseCase
 {
-	constructor(
-    private readonly certificateRepository: CertificateRepository,
-    private readonly transformerRepository: TransformerRepository,
-  )
-  {}
+    constructor(
+        private readonly certificateRepository: CertificateRepository,
+        private readonly transformerRepository: TransformerRepository,
+    )
+    {}
 
-	async execute({ id }: IRequest): Promise<CertificateResponse>
-  {
-		const certificate = await this.certificateRepository.findByIdWithDetails(id);
-
-		if (!certificate)
+    async execute({ id }: IRequest): Promise<CertificateResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const certificate = await this.certificateRepository.findByIdWithDetails(id);
 
-		const realCertificate = await this.certificateRepository.findById(id);
+        if (!certificate)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-    realCertificate.numDownloads += 1;
+        const realCertificate = await this.certificateRepository.findById(id);
 
-    await this.certificateRepository.edit(realCertificate);
+        realCertificate.numDownloads += 1;
 
-    const pdf = await this.transformerRepository.generateCertificate(certificate);
+        await this.certificateRepository.edit(realCertificate);
 
-		return right(pdf)
-	}
+        const pdf = await this.transformerRepository.generateCertificate(certificate);
+
+        return right(pdf);
+    }
 }

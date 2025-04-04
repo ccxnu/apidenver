@@ -1,37 +1,22 @@
-import {
-  ArgumentsHost,
-  BadRequestException,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-} from '@nestjs/common';
-import { FastifyReply } from 'fastify';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from "@nestjs/common";
+import { Response } from "express";
 
-@Catch()
+@Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter
 {
-  catch(exception: HttpException, host: ArgumentsHost)
-  {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<FastifyReply>();
-    const status = exception.getStatus();
+    catch(exception: HttpException, host: ArgumentsHost)
+    {
+        const response = host.switchToHttp().getResponse<Response>();
+        let status = exception.getStatus();
 
-    response.status(status).send({ error: this.mapToError(exception) });
-  }
+        // Aquí puedes personalizar la respuesta de acuerdo al tipo de excepción
+        var error = {
+            code: "COD_ERROR_HTTP",
+            info: exception.message,
+        };
 
-  private mapToError(error: HttpException)
-  {
-    return {
-      message: error.message,
-      reasons: this.getReasons(error),
-    };
-  }
+        console.log(exception);
 
-  private getReasons(error: HttpException): string[] | undefined
-  {
-    if (!(error instanceof BadRequestException)) return;
-
-    const response = error.getResponse() as { message?: string[] };
-    return response?.message || [];
-  }
+        response.status(status).json(error);
+    }
 }

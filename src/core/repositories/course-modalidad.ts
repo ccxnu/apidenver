@@ -1,6 +1,6 @@
 export enum CourseModality
 {
-  PRESENCIAL = 'PRESENCIAL',
-  VIRTUAL = 'ONLINE',
-  HIBRIDO = 'HIBRIDO',
+    PRESENCIAL = "PRESENCIAL",
+    VIRTUAL = "ONLINE",
+    HIBRIDO = "HIBRIDO",
 }

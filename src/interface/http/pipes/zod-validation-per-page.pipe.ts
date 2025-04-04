@@ -1,6 +1,6 @@
-import { BadRequestException, PipeTransform } from '@nestjs/common';
-import { z, ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
+import { BadRequestException, PipeTransform } from "@nestjs/common";
+import { z, ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
 
 /**
  * @param perPage
@@ -9,27 +9,27 @@ import { fromZodError } from 'zod-validation-error';
  */
 export class ZodValidationPerPagePipe implements PipeTransform
 {
-	transform(value: string)
-  {
-		const schema = z.coerce.number().min(1).max(50).optional().default(20);
-
-		try
+    transform(value: string)
     {
-			const parsedValue = schema.parse(value);
-			return parsedValue;
-		}
-    catch (error)
-    {
-			if (error instanceof ZodError)
-      {
-				throw new BadRequestException({
-					message: "Valor 'perPage' inválido",
-					statusCode: 400,
-					errors: fromZodError(error),
-				});
-			}
+        const schema = z.coerce.number().min(1).max(50).optional().default(20);
 
-			throw new BadRequestException('Error de validación');
-		}
-	}
+        try
+        {
+            const parsedValue = schema.parse(value);
+            return parsedValue;
+        }
+        catch (error)
+        {
+            if (error instanceof ZodError)
+            {
+                throw new BadRequestException({
+                    message: "Valor 'perPage' inválido",
+                    statusCode: 400,
+                    errors: fromZodError(error),
+                });
+            }
+
+            throw new BadRequestException("Error de validación");
+        }
+    }
 }

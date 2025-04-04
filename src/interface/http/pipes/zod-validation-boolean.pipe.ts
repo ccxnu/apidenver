@@ -1,6 +1,6 @@
-import { BadRequestException, PipeTransform } from '@nestjs/common';
-import { z, ZodError } from 'zod';
-import { fromZodError } from 'zod-validation-error';
+import { BadRequestException, PipeTransform } from "@nestjs/common";
+import { z, ZodError } from "zod";
+import { fromZodError } from "zod-validation-error";
 
 /**
  * @param [any boolean]
@@ -10,35 +10,35 @@ import { fromZodError } from 'zod-validation-error';
  */
 export class ZodValidationBooleanPipe implements PipeTransform
 {
-	transform(value: string)
-  {
-		const schema = z.preprocess((val) =>
+    transform(value: string)
     {
-			if (typeof val === 'string')
-      {
-				if (['1', 'true'].includes(val.toLowerCase())) return true;
-				if (['0', 'false'].includes(val.toLowerCase())) return false;
-			}
-			return val;
-		}, z.coerce.boolean().optional());
+        const schema = z.preprocess((val) =>
+        {
+            if (typeof val === "string")
+            {
+                if (["1", "true"].includes(val.toLowerCase())) return true;
+                if (["0", "false"].includes(val.toLowerCase())) return false;
+            }
+            return val;
+        }, z.coerce.boolean().optional());
 
-		try
-    {
-			const parsedValue = schema.parse(value);
-			return parsedValue;
-		}
-    catch (error)
-    {
-			if (error instanceof ZodError)
-      {
-				throw new BadRequestException({
-					message: "Valor 'boolean' inválido",
-					statusCode: 400,
-					errors: fromZodError(error),
-				});
-			}
+        try
+        {
+            const parsedValue = schema.parse(value);
+            return parsedValue;
+        }
+        catch (error)
+        {
+            if (error instanceof ZodError)
+            {
+                throw new BadRequestException({
+                    message: "Valor 'boolean' inválido",
+                    statusCode: 400,
+                    errors: fromZodError(error),
+                });
+            }
 
-			throw new BadRequestException('Error de validación');
-		}
-	}
+            throw new BadRequestException("Error de validación");
+        }
+    }
 }

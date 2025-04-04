@@ -1,36 +1,32 @@
-import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
+import { NestFactory } from "@nestjs/core";
+import { json, urlencoded } from "express";
 
-import { EnvService } from '@/infra/env/env.service';
-
-import { AppModule } from './app.module';
-import { AllExceptionFilter } from './interface/common/filters/all-exception.filter';
-import { LoggingInterceptor } from './interface/common/interceptors/logger.interceptor';
+import { AppModule } from "./app.module";
+import { AllExceptionFilter } from "./interface/common/filters/all-exception.filter";
+import { HttpExceptionFilter } from "./interface/common/filters/http-exception.filter";
 
 async function bootstrap()
 {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter(),
-    { logger: ['error', 'warn'] }
-  );
+    const app = await NestFactory.create(AppModule, {
+        logger: ["error", "warn"],
+    });
 
-  // Env constants
-	const envService = app.get(EnvService)
-  const GLOBAL_PREFIX = envService.get('GLOBAL_PREFIX');
+    app.enableCors();
+    app.use(json({ limit: "100mb" }));
+    app.use(urlencoded({ extended: false, limit: "100mb" }));
 
-  app.enableCors();
+    // Filter
+    app.useGlobalFilters(new AllExceptionFilter());
+    app.useGlobalFilters(new HttpExceptionFilter());
 
-  // Filter
-  app.useGlobalFilters(new AllExceptionFilter());
+    // Base routing
+    app.setGlobalPrefix("api");
 
-  // Interceptors
-  app.useGlobalInterceptors(new LoggingInterceptor());
-
-  // Base routing
-  app.setGlobalPrefix(GLOBAL_PREFIX);
-
-  await app.listen(3000, '0.0.0.0');
+    await app.listen(3000, "0.0.0.0");
 }
 
-bootstrap();
+bootstrap().catch((err) =>
+{
+    console.error("Init service failed:", err);
+    process.exit(1);
+});

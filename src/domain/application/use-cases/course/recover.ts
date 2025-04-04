@@ -1,38 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { CourseRepository } from '@/application/repositories/course.repository';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
+import { CourseRepository } from "@/application/repositories/course.repository";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 
 interface RecoverCourseUseCaseRequest
 {
-  courseId: string;
+    courseId: string;
 }
 
-type RecoverCourseUseCaseResponse = Either<
-  ResourceNotFoundError,
-  object
->
+type RecoverCourseUseCaseResponse = Either<ResourceNotFoundError, object>;
 
 @Injectable()
 export class RecoverCourseUseCase
 {
-	constructor(private courseRepository: CourseRepository)
-  {}
+    constructor(private courseRepository: CourseRepository)
+    {}
 
-	async execute({ courseId }: RecoverCourseUseCaseRequest):
-    Promise<RecoverCourseUseCaseResponse>
-  {
-
-    const course = await this.courseRepository.findByIdOnDelete(courseId);
-
-		if (!course)
+    async execute({ courseId }: RecoverCourseUseCaseRequest): Promise<RecoverCourseUseCaseResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const course = await this.courseRepository.findByIdOnDelete(courseId);
 
-    await this.courseRepository.recover(course);
+        if (!course)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-		return right({})
-	}
+        await this.courseRepository.recover(course);
+
+        return right({});
+    }
 }

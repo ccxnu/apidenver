@@ -7,25 +7,25 @@ import { ParticipationInCooperative } from "@/domain/enums/participation-coopera
 
 export interface UserTable
 {
-  id: string;
-	first_names: string;
-	last_names: string;
-  username: string;
-	password: string;
-	email: string;
-  cedula: string;
-  phone: string;
-	gender: UserGenders;
-	birth_date: Date;
-  city: string | null;
-  has_disability: boolean | null;
-  education_level: EducationLevel | null;
-  participation_in_cooperative: ParticipationInCooperative | null;
-  job_position: JobPosition | null;
-  facturation_id: string | null;
-	role: UserRoles;
-  email_status: EmailStatus;
-  date_created: Date;
-  date_updated: Date;
-	date_deleted: Date | null;
+    id: string;
+    first_names: string;
+    last_names: string;
+    username: string;
+    password: string;
+    email: string;
+    cedula: string;
+    phone: string;
+    gender: UserGenders;
+    birth_date: Date;
+    city: string | null;
+    has_disability: boolean | null;
+    education_level: EducationLevel | null;
+    participation_in_cooperative: ParticipationInCooperative | null;
+    job_position: JobPosition | null;
+    facturation_id: string | null;
+    role: UserRoles;
+    email_status: EmailStatus;
+    date_created: Date;
+    date_updated: Date;
+    date_deleted: Date | null;
 }

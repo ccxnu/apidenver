@@ -1,54 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { CertificateRepository } from '@/application/repositories/certificate.repository';
-import { EnrollmentRepository } from '@/application/repositories/enrollment.repository';
-import { Either, left, right } from '@/core/either';
-import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
-import { Certificate } from '@/domain/entities/certificate';
+import { CertificateRepository } from "@/application/repositories/certificate.repository";
+import { EnrollmentRepository } from "@/application/repositories/enrollment.repository";
+import { Either, left, right } from "@/core/either";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
+import { Certificate } from "@/domain/entities/certificate";
 
 interface EditEnrollmentUseCaseRequest
 {
-  enrollmentId: string;
-  hasAccess: boolean;
-  isCompleted: boolean;
+    enrollmentId: string;
+    hasAccess: boolean;
+    isCompleted: boolean;
 }
 
-type EditEnrollmentUseCaseResponse = Either<
-  ResourceNotFoundError,
-  object
->
+type EditEnrollmentUseCaseResponse = Either<ResourceNotFoundError, object>;
 
 @Injectable()
 export class EditEnrollmentUseCase
 {
-  constructor(
-    private readonly enrollmentRepository: EnrollmentRepository,
-    private readonly certificateRepository: CertificateRepository,
-  )
-  {}
+    constructor(
+        private readonly enrollmentRepository: EnrollmentRepository,
+        private readonly certificateRepository: CertificateRepository,
+    )
+    {}
 
-  async execute({ enrollmentId, hasAccess, isCompleted }: EditEnrollmentUseCaseRequest): Promise<EditEnrollmentUseCaseResponse>
-  {
-
-    const enrollment = await this.enrollmentRepository.findById(enrollmentId);
-
-    if (!enrollment)
+    async execute({
+        enrollmentId,
+        hasAccess,
+        isCompleted,
+    }: EditEnrollmentUseCaseRequest): Promise<EditEnrollmentUseCaseResponse>
     {
-			return left(new ResourceNotFoundError());
-		}
+        const enrollment = await this.enrollmentRepository.findById(enrollmentId);
 
-    if (hasAccess !== undefined) enrollment.hasAccess = hasAccess;
-    if (isCompleted !== undefined) enrollment.isCompleted = isCompleted;
+        if (!enrollment)
+        {
+            return left(new ResourceNotFoundError());
+        }
 
-    if(isCompleted === true)
-    {
-      const newCertificate = Certificate.create({ enrollmentId: enrollment.id });
+        if (hasAccess !== undefined) enrollment.hasAccess = hasAccess;
+        if (isCompleted !== undefined) enrollment.isCompleted = isCompleted;
 
-      await this.certificateRepository.create(newCertificate);
+        if (isCompleted === true)
+        {
+            const newCertificate = Certificate.create({ enrollmentId: enrollment.id });
+
+            await this.certificateRepository.create(newCertificate);
+        }
+
+        await this.enrollmentRepository.edit(enrollment);
+
+        return right({});
     }
-
-    await this.enrollmentRepository.edit(enrollment);
-
-    return right({});
-  }
 }

@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "removeComments": true,
     "incremental": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
@@ -27,7 +27,7 @@
       "@/tests/*": ["tests/*"],
       "@/src/*": ["src/*"]
     },
-    "types": ["vitest/globals", "node"]
+    "types": ["node"]
   },
   "exclude": ["node_modules", "dist"]
 }

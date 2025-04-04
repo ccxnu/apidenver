@@ -1,52 +1,49 @@
-import { BadRequestException, Body, ConflictException, Controller, HttpCode, Post  } from '@nestjs/common';
-import { z } from 'zod';
+import { BadRequestException, Body, ConflictException, Controller, HttpCode, Post } from "@nestjs/common";
+import { z } from "zod";
 
-import { AlreadyExistsError } from '@/application/errors/entity-already-exists-error';
-import { CreateEnrollmentUseCase } from '@/application/use-cases/enrollment/create';
-import { ResponseProcess } from '@/core/entities/response';
-import { IActiveUser } from '@/core/repositories/active-user-data';
-import { ActiveUser } from '@/infra/auth/decorator/active-user.decorator';
-import { ZodValidationPipe } from '@/interface/http/pipes/zod-validation.pipe';
+import { AlreadyExistsError } from "@/application/errors/entity-already-exists-error";
+import { CreateEnrollmentUseCase } from "@/application/use-cases/enrollment/create";
+import { ResponseProcess } from "@/core/entities/response";
+import { IActiveUser } from "@/core/repositories/active-user-data";
+import { ActiveUser } from "@/infra/auth/decorator/active-user.decorator";
+import { ZodValidationPipe } from "@/interface/http/pipes/zod-validation.pipe";
 
 const createBodySchema = z.object({
-  courseId: z.string(),
-})
+    courseId: z.string(),
+});
 
-type CreateBodySchema = z.infer<typeof createBodySchema>
+type CreateBodySchema = z.infer<typeof createBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(createBodySchema);
 
-@Controller('/enrollment/create')
+@Controller("/enrollment/create")
 export class CreateEnrollmentController
 {
-	constructor(private readonly createUseCase: CreateEnrollmentUseCase)
-  {}
+    constructor(private readonly createUseCase: CreateEnrollmentUseCase)
+    {}
 
-	@Post()
-	@HttpCode(201)
-	async handle(
-    @Body(bodyValidationPipe) body: CreateBodySchema,
-    @ActiveUser() user: IActiveUser
-  )
-  {
-    const { courseId } = body;
-    const { sub } = user;
-
-		const response = await this.createUseCase.execute({ userId: sub, courseId });
-
-    if (response.isLeft())
+    @Post()
+    @HttpCode(201)
+    async handle(@Body(bodyValidationPipe) body: CreateBodySchema, @ActiveUser() user: IActiveUser)
     {
-      const error = response.value;
+        const { courseId } = body;
+        const { sub } = user;
 
-      switch (error.constructor)
-      {
-        case AlreadyExistsError:
-					throw new ConflictException(error.message);
-        default:
-					throw new BadRequestException(error.message);
-      }
+        const response = await this.createUseCase.execute({ userId: sub, courseId });
+
+        if (response.isLeft())
+        {
+            const error = response.value;
+
+            switch (error.constructor)
+            {
+                case AlreadyExistsError:
+                    throw new ConflictException(error.message);
+                default:
+                    throw new BadRequestException(error.message);
+            }
+        }
+
+        return new ResponseProcess();
     }
-
-    return new ResponseProcess();
-	}
 }

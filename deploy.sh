@@ -2,27 +2,33 @@
 
 # Ir al directorio del script
 cd "$(dirname "$0")"
-echo 'Inicio'
+echo ">> Start"
 
 # Variables
-NAME_CONTAINER="app-denver-ists"
-NAME_IMAGE="app-denver-ists"
+NAME_CONTAINER="ws-denver"
+NAME_IMAGE="img-ws-denver"
 PORT_EXPOSE=8048
-ENV_FILE="/CONFIG/VARIABLES_ENTORNO/denver-ists/.env"
-NETWORK="database"
+ENV_FILE="/CONFIG/VARIABLES_ENTORNO/denver/.env"
+TIMEZONE="America/Guayaquil"
+NETWORK="ists"
 
 docker build --target production -t "$NAME_IMAGE" -f Dockerfile .
 
-echo 'Compilado correctamente'
+echo ">> Compiled successfully"
 
-docker rm -f "$NAME_CONTAINER"
+# Si el contenedor existe, bórralo
+if docker ps -a --format '{{.Names}}' | grep -q "^$NAME_CONTAINER$"; then
+    echo ">> Removing the existing container"
+    docker rm -f "$NAME_CONTAINER"
+fi
 
 docker run -d \
-  --restart=always \
-  --name "$NAME_CONTAINER" \
-  --env-file "$ENV_FILE" \
-  --network "$NETWORK" \
-  -p "$PORT_EXPOSE":3000 \
-  "$NAME_IMAGE"
+    --restart=always \
+    --name "$NAME_CONTAINER" \
+    --env-file "$ENV_FILE" \
+    --network "$NETWORK" \
+    -e TZ="$TIMEZONE" \
+    -p "$PORT_EXPOSE":3000 \
+    "$NAME_IMAGE"
 
-echo 'Successfull service'
+echo ">> Successfully service"
