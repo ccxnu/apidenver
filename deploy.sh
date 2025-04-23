@@ -5,8 +5,8 @@ cd "$(dirname "$0")"
 echo ">> Start"
 
 # Variables
-NAME_CONTAINER="ws-denver"
-NAME_IMAGE="img-ws-denver"
+NAME_CONTAINER="ws_denver"
+NAME_IMAGE="img_ws_denver"
 PORT_EXPOSE=8048
 ENV_FILE="/CONFIG/VARIABLES_ENTORNO/denver/.env"
 TIMEZONE="America/Guayaquil"

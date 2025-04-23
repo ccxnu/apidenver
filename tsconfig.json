@@ -1,33 +1,30 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "target": "ES2022",
-    "strict": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "removeComments": true,
-    "incremental": true,
-    "strictNullChecks": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@/core/*": ["src/core/*"],
-      "@/application/*": ["src/domain/application/*"],
-      "@/domain/*": ["src/domain/enterprise/*"],
-      "@/interface/*": ["src/interface/*"],
-      "@/infra/*": ["src/infra/*"],
-      "@/tests/*": ["tests/*"],
-      "@/src/*": ["src/*"]
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "ES2021",
+        "sourceMap": true,
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "incremental": true,
+        "skipLibCheck": true,
+        "strictNullChecks": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitAny": false,
+        "strictBindCallApply": false,
+        "noFallthroughCasesInSwitch": false,
+        "paths": {
+            "@Application/*": ["src/Application/*"],
+            "@Domain/*": ["src/Domain/*"],
+            "@Infra/*": ["src/Infra/*"],
+            "@ws/*": ["src/ws/*"],
+            "@src/*": ["src/*"]
+        },
+        "types": ["node"]
     },
-    "types": ["node"]
-  },
-  "exclude": ["node_modules", "dist"]
+    "exclude": ["node_modules", "dist"]
 }

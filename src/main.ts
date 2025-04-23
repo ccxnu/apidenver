@@ -1,28 +1,30 @@
 import { NestFactory } from "@nestjs/core";
+import 'reflect-metadata';
 import { json, urlencoded } from "express";
 
-import { AppModule } from "./app.module";
-import { AllExceptionFilter } from "./interface/common/filters/all-exception.filter";
-import { HttpExceptionFilter } from "./interface/common/filters/http-exception.filter";
+import { AppModule } from "@ws/app.module";
+import { AllExceptionFilter } from "@ws/Common/Filters/all-exception.filter";
+import { HttpExceptionFilter } from "@ws/Common/Filters/http-exception.filter";
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap()
 {
-    const app = await NestFactory.create(AppModule, {
-        logger: ["error", "warn"],
-    });
+    const app = await NestFactory.create(AppModule, { logger: ["error", "warn"] });
 
     app.enableCors();
     app.use(json({ limit: "100mb" }));
     app.use(urlencoded({ extended: false, limit: "100mb" }));
 
-    // Filter
     app.useGlobalFilters(new AllExceptionFilter());
     app.useGlobalFilters(new HttpExceptionFilter());
+
+    app.useGlobalPipes(new ValidationPipe());
 
     // Base routing
     app.setGlobalPrefix("api");
 
     await app.listen(3000, "0.0.0.0");
+    console.info("Service running ^~^");
 }
 
 bootstrap().catch((err) =>
