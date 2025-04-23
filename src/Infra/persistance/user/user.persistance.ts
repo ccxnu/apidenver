@@ -1,6 +1,6 @@
-import { DatabaseService } from '../../database/database.service';
-import { User } from '../../../Domain/Models/User';
-import { UserRepository } from '../../../Application/Common/Repositories/user.repository';
+import { UserRepository } from "@Application/Common/Repositories/user.repository";
+import { DatabaseService } from "../database/database.service";
+import { User } from "@Domain/Models/User";
 
 export class UserPersistance implements UserRepository {
   constructor(private readonly databaseService: DatabaseService) {}
