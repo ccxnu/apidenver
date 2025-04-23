@@ -1,81 +1,57 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DatabaseService } from 'src/Infra/persistance/database/database.service';
+import { UserPersistance } from 'src/Infra/persistance/user/user.persistance';
+import { User } from 'src/Domain/Models/User';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly userPersistance: UserPersistance) {}
 
   @Post()
-  create(@Body() createUserDto: any) {
-    const db = this.databaseService.getDb();
-    return new Promise((resolve, reject) => {
-      const sql = 'INSERT INTO dnv_users (user_id, email, password_hash, role, is_verified, last_login, created_at, updated_at, deactivated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      const { user_id, email, password_hash, role, is_verified, last_login, created_at, updated_at, deactivated_at } = createUserDto;
-      db.run(sql, [user_id, email, password_hash, role, is_verified, last_login, created_at, updated_at, deactivated_at], function(err: any) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ user_id: user_id });
-        }
-      });
-    });
+  async create(@Body() createUserDto: any): Promise<User> {
+    const user = new User();
+    user.user_id = createUserDto.user_id;
+    user.email = createUserDto.email;
+    user.password_hash = createUserDto.password_hash;
+    user.role = createUserDto.role;
+    user.is_verified = createUserDto.is_verified;
+    user.last_login = createUserDto.last_login;
+    user.created_at = createUserDto.created_at;
+    user.updated_at = createUserDto.updated_at;
+    user.deactivated_at = createUserDto.deactivated_at;
+    return await this.userPersistance.create(user);
   }
 
   @Get()
-  findAll() {
-    const db = this.databaseService.getDb();
-    return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM dnv_users', [], (err: any, rows: any) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
-    });
+  async findAll(): Promise<User[]> {
+    const users = await this.userPersistance.findByEmail("")
+    if(users){
+        return [users];
+    }else{
+        return [];
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const db = this.databaseService.getDb();
-    return new Promise((resolve, reject) => {
-      db.get('SELECT * FROM dnv_users WHERE user_id = ?', [id], (err: any, row: any) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(row);
-        }
-      });
-    });
+  async findOne(@Param('id') id: string): Promise<User | null> {
+    return await this.userPersistance.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: any) {
-    const db = this.databaseService.getDb();
-    return new Promise((resolve, reject) => {
-        const { email, password_hash, role, is_verified, last_login, updated_at, deactivated_at } = updateUserDto;
-        const sql = 'UPDATE dnv_users SET email = ?, password_hash = ?, role = ?, is_verified = ?, last_login = ?, updated_at = ?, deactivated_at = ? WHERE user_id = ?';
-      db.run(sql, [email, password_hash, role, is_verified, last_login, updated_at, deactivated_at, id], function(err: any) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ changes: this.changes });
-        }
-      });
-    });
+  async update(@Param('id') id: string, @Body() updateUserDto: any): Promise<User> {
+    const user = new User();
+    user.user_id = id;
+    user.email = updateUserDto.email;
+    user.password_hash = updateUserDto.password_hash;
+    user.role = updateUserDto.role;
+    user.is_verified = updateUserDto.is_verified;
+    user.last_login = updateUserDto.last_login;
+    user.updated_at = updateUserDto.updated_at;
+    user.deactivated_at = updateUserDto.deactivated_at;
+    return await this.userPersistance.update(user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    const db = this.databaseService.getDb();
-    return new Promise((resolve, reject) => {
-      db.run('DELETE FROM dnv_users WHERE user_id = ?', [id], function(err: any) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ changes: this.changes });
-        }
-      });
-    });
+  async remove(@Param('id') id: string): Promise<boolean> {
+    return await this.userPersistance.delete(id);
   }
 }
