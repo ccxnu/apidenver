@@ -1,14 +1,42 @@
-export class CreateUserDto
-{
-    id: number;
+import {
+  IsString,
+  MinLength,
+  MaxLength,
+  IsEmail,
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+  IsDate,
+  IsUUID,
+  MaxDate,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-    username: string;
+export class CreateUserDto {
+  @IsUUID()
+  id: string;
 
-    password: string;
+  @IsString()
+  @MinLength(3)
+  @MaxLength(20)
+  username: string;
 
-    age?: number;
+  @IsString()
+  @MinLength(8)
+  password: string;
 
-    email: string;
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(255)
+  age?: number;
 
-    registrationDate: Date;
+  @IsEmail()
+  email: string;
+
+  @Type(() => Date)
+  @IsDate()
+  @MaxDate(new Date()) // debe ser en el pasado
+  registrationDate: Date;
 }

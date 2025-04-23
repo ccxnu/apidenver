@@ -8,13 +8,13 @@ export class HttpExceptionFilter implements ExceptionFilter
     {
         const response = host.switchToHttp().getResponse<Response>();
         const status = exception.getStatus();
+        const res = exception.getResponse();
 
         const error = {
             code: "COD_ERROR_HTTP",
             info: exception.message,
+            errors: typeof res === 'object' ? (res as any).message : null,
         };
-
-        console.log(exception);
 
         response.status(status).json(error);
     }

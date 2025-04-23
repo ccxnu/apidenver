@@ -1,11 +1,10 @@
 import { NestFactory } from "@nestjs/core";
-import 'reflect-metadata';
+import { ValidationPipe } from "@nestjs/common";
 import { json, urlencoded } from "express";
 
 import { AppModule } from "@ws/app.module";
 import { AllExceptionFilter } from "@ws/Common/Filters/all-exception.filter";
 import { HttpExceptionFilter } from "@ws/Common/Filters/http-exception.filter";
-import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap()
 {
@@ -18,7 +17,7 @@ async function bootstrap()
     app.useGlobalFilters(new AllExceptionFilter());
     app.useGlobalFilters(new HttpExceptionFilter());
 
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
     // Base routing
     app.setGlobalPrefix("api");
