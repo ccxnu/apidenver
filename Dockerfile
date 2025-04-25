@@ -19,6 +19,7 @@ COPY tsconfig*.json ./
 COPY nest-cli.json ./
 COPY src src
 COPY public public
+COPY docs docs
 
 RUN npm run build && \
     npm prune --production
@@ -36,6 +37,7 @@ COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 COPY --from=build $DIR/node_modules node_modules
 COPY --from=build $DIR/package*.json ./
 COPY --from=build $DIR/public public
+COPY --from=build $DIR/docs docs
 COPY --from=build $DIR/dist dist
 
 USER $USER
