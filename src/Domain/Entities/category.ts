@@ -1,6 +1,6 @@
 export interface ICategory
 {
-    ctgCategoryId: number;  // SERIAL
+    ctgCategoryId: number; // SERIAL
     name: string;
     description: string | null;
     ageRangeStart: number;

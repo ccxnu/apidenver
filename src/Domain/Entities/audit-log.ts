@@ -1,9 +1,9 @@
 export interface IAuditLog
 {
-    logId: string;  // UUID como string
-    userId: string | null;  // UUID como string, puede ser null
+    logId: string; // UUID como string
+    userId: string | null; // UUID como string, puede ser null
     actionType: string;
-    targetId: string | null;  // UUID como string, puede ser null
+    targetId: string | null; // UUID como string, puede ser null
     targetType: string | null;
     ipAddress: string | null;
     userAgent: string | null;

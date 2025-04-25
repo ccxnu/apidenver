@@ -22,16 +22,13 @@ import { EnvService } from "@Infra/env/env.service";
                 const TIME = env.get("JWT_ACCESS_TOKEN_TIME");
 
                 return {
-                  signOptions: { expiresIn: TIME },
-                  secret: PRIVATE_KEY,
+                    signOptions: { expiresIn: TIME },
+                    secret: PRIVATE_KEY,
                 };
             },
         }),
     ],
-    providers: [
-        JwtStrategy,
-        { provide: APP_GUARD, useClass: JwtAuthGuard },
-    ],
+    providers: [JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AuthModule
 {}

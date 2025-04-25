@@ -1,6 +1,6 @@
 export interface ITestItem
 {
-    ttiItemId: number;  // SERIAL
+    ttiItemId: number; // SERIAL
     ttiCategoryId: number;
     itemCode: string;
     description: string;

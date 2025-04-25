@@ -1,38 +1,41 @@
 export interface IUser
 {
-    userId: string;  // UUID como string
+    user_id: string; // UUID como string
+    name: string;
     email: string;
-    passwordHash: string;
-    role: "admin" | "tester" | "viewer";
-    isVerified: boolean;
-    lastLogin: Date | null;
-    createdAt: Date;
-    updatedAt: Date | null;
-    deactivatedAt: Date | null;
+    password_hash: string;
+    role: "ADMINISTRADOR" | "DOCTOR" | "REPRESENTANTE" | "PACIENTE";
+    is_verified: boolean;
+    last_login: Date | null;
+    created_at: Date;
+    updated_at: Date | null;
+    deactivated_at: Date | null;
 }
 
 export class User implements IUser
 {
-    userId: string;
+    user_id: string;
+    name: string;
     email: string;
-    passwordHash: string;
-    role: "admin" | "tester" | "viewer";
-    isVerified: boolean;
-    lastLogin: Date | null;
-    createdAt: Date;
-    updatedAt: Date | null;
-    deactivatedAt: Date | null;
+    password_hash: string;
+    role: "ADMINISTRADOR" | "DOCTOR" | "REPRESENTANTE" | "PACIENTE";
+    is_verified: boolean;
+    last_login: Date | null;
+    created_at: Date;
+    updated_at: Date | null;
+    deactivated_at: Date | null;
 
     constructor(data: IUser)
     {
-        this.userId = data.userId;
+        this.user_id = data.user_id;
+        this.name = data.name;
         this.email = data.email;
-        this.passwordHash = data.passwordHash;
+        this.password_hash = data.password_hash;
         this.role = data.role;
-        this.isVerified = data.isVerified;
-        this.lastLogin = data.lastLogin;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-        this.deactivatedAt = data.deactivatedAt;
+        this.is_verified = data.is_verified;
+        this.last_login = data.last_login;
+        this.created_at = data.created_at;
+        this.updated_at = data.updated_at;
+        this.deactivated_at = data.deactivated_at;
     }
 }

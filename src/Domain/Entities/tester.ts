@@ -1,6 +1,6 @@
 export interface ITester
 {
-    id: string;  // UUID como string
+    id: string; // UUID como string
     fullName: string;
     professionalLicense: string;
     specialty: string;

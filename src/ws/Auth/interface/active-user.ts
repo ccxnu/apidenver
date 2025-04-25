@@ -18,5 +18,5 @@ export interface IActiveUser
     /**
      * The subject's (user) name.
      *role: UserRole;
-    */
+     */
 }

@@ -1,9 +1,8 @@
 import { IUser } from "@Domain/Entities/user";
-import { Observable } from "rxjs";
 
 export abstract class UserRepository
 {
-    abstract findById(id: string): Observable<any | null>;
+    abstract findById(id: string): Promise<IUser | null>;
     abstract findByIdOnDeleted(id: string): Promise<IUser | null>;
     abstract findByIdWithDetails(id: string): Promise<any | null>;
     abstract findByUsername(username?: string): Promise<IUser | null>;

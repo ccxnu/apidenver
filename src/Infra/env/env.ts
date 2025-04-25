@@ -1,9 +1,9 @@
-import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IsIn, IsNumber, IsString } from "class-validator";
 
 export class EnvConfig
 {
-    @IsIn(['production', 'development'])
-    NODE_ENV: 'production' | 'development' = 'development';
+    @IsIn(["production", "development"])
+    NODE_ENV: "production" | "development" = "development";
 
     @IsString()
     DATABASE_URL: string;
@@ -22,5 +22,5 @@ export class EnvConfig
     EMAIL_SENDER: string;
 
     @IsString()
-    APPLICATION: string = 'denver';
+    APPLICATION: string = "denver";
 }

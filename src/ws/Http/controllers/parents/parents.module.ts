@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { ParentsController } from './parents.controller';
-import { DatabaseService } from 'src/Infra/persistance/database/database.service';
+import { Module } from "@nestjs/common";
+import { ParentsController } from "./parents.controller";
 
 @Module({
-  controllers: [ParentsController],
-  providers: [DatabaseService],
+    controllers: [ParentsController],
+    providers: [],
 })
-export class ParentsModule {}
+export class ParentsModule
+{}

@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { AuditLogsController } from './audit-logs.controller';
-import { DatabaseService } from 'src/Infra/persistance/database/database.service';
+import { Module } from "@nestjs/common";
+import { AuditLogsController } from "./audit-logs.controller";
 
 @Module({
-  controllers: [AuditLogsController],
-  providers: [DatabaseService],
+    controllers: [AuditLogsController],
+    providers: [],
 })
-export class AuditLogsModule {}
+export class AuditLogsModule
+{}

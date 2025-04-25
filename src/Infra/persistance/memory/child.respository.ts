@@ -7,7 +7,7 @@ export class ChildRepository implements IGenericRepository<IChild>
 
     async findById(id: string): Promise<IChild | null>
     {
-        return this.children.find(child => child.id === id) || null;
+        return this.children.find((child) => child.id === id) || null;
     }
 
     async findAll(): Promise<IChild[]>
@@ -23,18 +23,20 @@ export class ChildRepository implements IGenericRepository<IChild>
 
     async update(id: string, entity: IChild): Promise<IChild>
     {
-        const index = this.children.findIndex(child => child.id === id);
-        if (index !== -1) {
+        const index = this.children.findIndex((child) => child.id === id);
+        if (index !== -1)
+        {
             this.children[index] = { ...this.children[index], ...entity };
             return this.children[index];
         }
-        throw new Error('Child not found');
+        throw new Error("Child not found");
     }
 
     async delete(id: string): Promise<void>
     {
-        const index = this.children.findIndex(child => child.id === id);
-        if (index !== -1) {
+        const index = this.children.findIndex((child) => child.id === id);
+        if (index !== -1)
+        {
             this.children.splice(index, 1);
         }
     }

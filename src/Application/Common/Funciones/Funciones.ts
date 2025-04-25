@@ -6,7 +6,7 @@ export class Funciones
     private length: number = 6;
     private characters: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$*_";
 
-    getRandomNumber(length?: number): number
+    public getRandomNumber(length?: number): number
     {
         const size = (length ?? this.length) - 1;
         const n = Math.pow(10, size);
@@ -14,7 +14,7 @@ export class Funciones
         return Math.floor(n + Math.random() * n * 9);
     }
 
-    getRandomPassword(length?: number): string
+    public getRandomPassword(length?: number): string
     {
         const lg = length ?? this.length;
 
@@ -23,7 +23,7 @@ export class Funciones
             .join("");
     }
 
-    getNewUUID(): string
+    public static getNewUUID(): string
     {
         return randomUUID();
     }

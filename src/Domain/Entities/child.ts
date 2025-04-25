@@ -1,6 +1,6 @@
 export interface IChild
 {
-    id: string;  // UUID como string
+    id: string; // UUID como string
     firstName: string;
     lastName: string;
     birthDate: Date;

@@ -1,7 +1,7 @@
 export interface IDevelopmentalAlert
 {
-    dalAlertId: string;  // UUID como string
-    dalChildId: string;  // UUID como string
+    dalAlertId: string; // UUID como string
+    dalChildId: string; // UUID como string
     dalItemId: number;
     alertType: "Retraso" | "Precaución";
     severity: number;

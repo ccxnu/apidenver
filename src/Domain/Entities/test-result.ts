@@ -1,7 +1,7 @@
 export interface ITestResult
 {
-    trsResultId: string;  // UUID como string
-    trsSessionId: string;  // UUID como string
+    trsResultId: string; // UUID como string
+    trsSessionId: string; // UUID como string
     trsItemId: number;
     result: "Logrado" | "No logrado" | "No aplicable" | "No observado";
     observations: string | null;

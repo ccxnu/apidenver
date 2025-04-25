@@ -3,12 +3,11 @@ import * as axios from "axios";
 import { IHttpService } from "./IHttpService";
 import { RequestService } from "../Model/RequestService";
 
-
 @Injectable()
 export class HttpService implements IHttpService
 {
-
-    constructor(){}
+    constructor()
+    {}
 
     async requestService(request: RequestService): Promise<any>
     {
@@ -16,7 +15,7 @@ export class HttpService implements IHttpService
             method: request.method,
             url: request.service_url,
             data: request.data,
-            headers: await this.addHeader(request)
+            headers: await this.addHeader(request),
         };
 
         const respuesta = await axios.default(req);
@@ -30,14 +29,13 @@ export class HttpService implements IHttpService
 
         if (request.header_adicionals != undefined && request.header_adicionals != null)
         {
-            request.header_adicionals.forEach(e =>
+            request.header_adicionals.forEach((e) =>
             {
-                if (e.value != null && e.value != '')
+                if (e.value != null && e.value != "")
                 {
                     headers[e.key] = e.value;
                 }
-            }
-            );
+            });
         }
 
         return headers;

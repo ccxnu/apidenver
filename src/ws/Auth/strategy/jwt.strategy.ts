@@ -7,7 +7,7 @@ import { IActiveUser } from "../interface/active-user";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy)
 {
-    constructor(config: EnvService)
+    constructor(private readonly config: EnvService)
     {
         const SECRET_KEY = config.get("JWT_SECRET_KEY");
 

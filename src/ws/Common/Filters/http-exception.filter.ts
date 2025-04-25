@@ -13,7 +13,7 @@ export class HttpExceptionFilter implements ExceptionFilter
         const error = {
             code: "COD_ERROR_HTTP",
             info: exception.message,
-            errors: typeof res === 'object' ? (res as any).message : null,
+            errors: typeof res === "object" ? (res as any).message : null,
         };
 
         response.status(status).json(error);

@@ -1,7 +1,7 @@
 export interface IEmailVerification
 {
-    verificationId: string;  // UUID como string
-    userId: string;          // UUID como string
+    verificationId: string; // UUID como string
+    userId: string; // UUID como string
     token: string;
     expiresAt: Date;
     consumedAt: Date | null;

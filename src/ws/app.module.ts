@@ -9,8 +9,8 @@ import { plainToInstance } from "class-transformer";
 @Module({
     imports: [
         ConfigModule.forRoot({
-          isGlobal: true,
-          validate: (config) => plainToInstance(EnvConfig, config)
+            isGlobal: true,
+            validate: (config) => plainToInstance(EnvConfig, config),
         }),
         AuthModule,
         HttpModule,

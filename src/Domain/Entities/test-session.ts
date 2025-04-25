@@ -1,8 +1,8 @@
 export interface ITestSession
 {
-    ttsSessionId: string;  // UUID como string
-    ttsChildId: string;  // UUID como string
-    ttsTesterId: string;  // UUID como string
+    ttsSessionId: string; // UUID como string
+    ttsChildId: string; // UUID como string
+    ttsTesterId: string; // UUID como string
     testDate: Date;
     correctedAge: number;
     generalNotes: string | null;

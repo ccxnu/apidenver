@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { PasswordResetsController } from './password-resets.controller';
-import { DatabaseService } from 'src/Infra/persistance/database/database.service';
+import { Module } from "@nestjs/common";
+import { PasswordResetsController } from "./password-resets.controller";
 
 @Module({
-  controllers: [PasswordResetsController],
-  providers: [DatabaseService],
+    controllers: [PasswordResetsController],
+    providers: [],
 })
-export class PasswordResetsModule {}
+export class PasswordResetsModule
+{}
