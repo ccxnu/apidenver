@@ -9,7 +9,7 @@ import * as sqlite3 from "sqlite3";
 export class DatabaseService implements OnModuleInit, OnModuleDestroy
 {
     private db: any;
-    private readonly DB_PATH = path.resolve("denver.db");
+    private readonly DB_PATH = path.join(process.cwd(), "data", "denver.db");
 
     async onModuleInit()
     {

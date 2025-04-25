@@ -32,6 +32,7 @@ FROM base AS production
 
 ENV NODE_ENV=production
 ENV USER=node
+RUN mkdir -p /app/data
 
 COPY --from=build /usr/bin/dumb-init /usr/bin/dumb-init
 COPY --from=build $DIR/node_modules node_modules
@@ -39,6 +40,9 @@ COPY --from=build $DIR/package*.json ./
 COPY --from=build $DIR/public public
 COPY --from=build $DIR/docs docs
 COPY --from=build $DIR/dist dist
+
+# Crear directorio para SQLite
+RUN mkdir -p /app/data && chown -R node:node /app/data
 
 USER $USER
 EXPOSE 3000
