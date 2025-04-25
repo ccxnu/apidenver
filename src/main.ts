@@ -11,7 +11,7 @@ async function bootstrap()
     const app = await NestFactory.create(AppModule, { logger: ["error", "warn"] });
 
     app.enableCors({
-        origin: ["http://localhost:3000", "http://localhost:5173"],
+        origin: ["http://localhost:3000", "http://localhost:5173", "https://goldfish-app-8elhw.ondigitalocean.app", "https://orca-app-isa63.ondigitalocean.app"],
         allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin"],
         methods: ["GET", "POST"],
         credentials: true,
